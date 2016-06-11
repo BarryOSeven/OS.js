@@ -6,7 +6,7 @@
       "proxy": false,
       "homes":  "%DROOT%/vfs/home",
       "mounts": {
-        "shared": "%DROOT%/vfs/public"
+        "upload": "%DROOT%/vfs/upload"
       },
       "groups": {
         "shared": []

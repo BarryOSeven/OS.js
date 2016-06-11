@@ -55,7 +55,9 @@
         "applications": true,
         "files": true,
         "paths": [
-          "home:///"
+          "home:///",
+          "library:///",
+          "uploads:///"
         ]
       }
     },
@@ -78,7 +80,7 @@
 
       "Mountpoints": {
         "shared": {
-          "enabled":     true,
+          "enabled":     false,
           "description": "Shared",
           "icon":        "places/folder-publicshare.png"
         }

@@ -1,0 +1,9 @@
+{
+  "className":  "Applicationforum",
+  "name":       "ConspiracyOS Forum",
+  "mime":       null,
+  "icon":       "categories/applications-system.png",
+  "preload":    [
+    {"src": "main.js", "type": "javascript"}
+  ]
+}

@@ -790,11 +790,12 @@
 
   CoreWM.prototype.openDesktopMenu = function(ev) {
     var self = this;
-    var menu = [
+    /*var menu = [
       {title: OSjs.Applications.CoreWM._('Open settings'), onClick: function(ev) {
         self.showSettings();
       }}
-    ];
+    ];*/
+    var menu = [];
 
     if ( this.getSetting('enableIconView') === true ) {
       menu.push({

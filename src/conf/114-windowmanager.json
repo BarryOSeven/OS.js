@@ -4,7 +4,7 @@
       "exec": "CoreWM",
       "args": {
         "defaults": {
-          "theme": "default",
+          "theme": "dark",
           "mediaQueries": {
             "mobile": 320,
             "tablet": 800
