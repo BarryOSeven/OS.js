@@ -6,9 +6,9 @@ cd $(dirname $DIR)
 
 if ! type "supervisor" > /dev/null 2>&1; then
   echo "Starting Node server without a supervisor..."
-  /usr/bin/node src/server/node/server.js dist-dev -p 8001 "$@"
+  /usr/bin/node /conspiracyos/conspiracyos/src/server/node/server.js dist-dev -p 8001 "$@"
   exit $?
 fi
 
 echo "Starting Node server with a supervisor..."
-supervisor --watch src/server/node,src/server/settings.json -- src/server/node/server.js dist-dev -p 8001 "$@"
+supervisor --watch /conspiracyos/src/server/node,src/server/settings.json -- /conspiracyos/src/server/node/server.js dist-dev -p 8001 "$@"

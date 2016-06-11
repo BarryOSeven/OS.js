@@ -4,4 +4,4 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $(dirname $DIR)
 
-node src/server/node/server.js "$@"
+/usr/bin/node /conspiracyos/conspiracyos/src/server/node/server.js "$@"
