@@ -6,10 +6,10 @@ ECHO To stop node server, press CTRL+C
 where /q supervisor
 IF ERRORLEVEL 1 (
     ECHO supervisor not installed, the server will not be live reloaded
-    node "%folder%\src\server\node\server.js" dist-dev
+    node "%folder%\src\server\node\server.js" -p 8001 dist-dev
 ) ELSE (
     ECHO supervisor is installed, live reload is active
-    supervisor --watch "%folder%\src\server" -- "%folder%\src\server\node\server.js" dist-dev
+    supervisor --watch "%folder%\src\server" -- "%folder%\src\server\node\server.js" -p 8001 dist-dev
 )
 
 
