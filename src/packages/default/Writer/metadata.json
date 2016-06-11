@@ -34,7 +34,7 @@
     "^text",
     "osjs\\/document"
   ],
-  "category": "office",
+  "category": "tools",
   "icon": "apps/libreoffice34-writer.png",
   "compability": [
     "richtext"

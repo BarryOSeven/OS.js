@@ -316,7 +316,11 @@
     });
 
     document.addEventListener('contextmenu', function(ev) {
-      return self.onContextMenu(ev);
+      ev.preventDefault();
+      ev.stopPropagation();
+      OSjs.Applications.CoreWM.showMenu(ev);
+      return true;
+      //return self.onContextMenu(ev);
     }, true);
 
     document.addEventListener('click', function(ev) {

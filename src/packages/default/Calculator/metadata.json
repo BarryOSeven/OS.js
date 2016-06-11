@@ -15,7 +15,7 @@
     "vi_VN": "Máy tính"
   },
   "icon": "apps/calc.png",
-  "category": "office",
+  "category": "tools",
   "preload": [
     {
       "src": "main.js",

@@ -30,7 +30,7 @@
     "tr_TR": "Varsayılan dosya yöneticisi",
     "vi_VN": "Trình quản lí file mặc định"
   },
-  "category": "utilities",
+  "category": "tools",
   "icon": "apps/file-manager.png",
   "preload": [
     {

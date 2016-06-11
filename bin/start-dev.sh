@@ -11,4 +11,4 @@ if ! type "supervisor" > /dev/null 2>&1; then
 fi
 
 echo "Starting Node server with a supervisor..."
-supervisor --watch /conspiracyos/src/server/node,src/server/settings.json -- /conspiracyos/src/server/node/server.js dist-dev -p 8001 "$@"
+supervisor --watch /conspiracyos/conspiracyos/src/server/node,src/server/settings.json -- /conspiracyos/conspiracyos/src/server/node/server.js dist-dev -p 8001 "$@"

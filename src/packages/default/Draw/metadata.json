@@ -30,7 +30,7 @@
     "vi_VN": "Phần mềm vẽ đơn giản"
   },
   "mime":       ["^image"],
-  "category":   "graphics",
+  "category":   "tools",
   "icon":       "categories/gnome-graphics.png",
   "compability":["canvas"],
   "preload":    [
@@ -39,6 +39,3 @@
     {"src": "main.css", "type": "stylesheet"}
   ]
 }
-
-
-

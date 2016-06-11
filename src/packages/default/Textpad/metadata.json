@@ -39,7 +39,7 @@
     "application\\/javascript",
     "application\\/json"
   ],
-  "category": "utilities",
+  "category": "tools",
   "icon": "apps/accessories-text-editor.png",
   "preload": [
     {

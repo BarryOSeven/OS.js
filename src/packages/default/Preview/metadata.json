@@ -34,7 +34,7 @@
     "^image",
     "^video"
   ],
-  "category": "multimedia",
+  "category": "tools",
   "icon": "mimetypes/image.png",
   "preload": [
     {

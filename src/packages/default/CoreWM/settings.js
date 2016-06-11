@@ -61,7 +61,12 @@
       enableSounds        : true,
       invertIconViewColor : false,
       moveOnResize        : true,       // Move windows into viewport on resize
-      desktopIcons        : [],
+      desktopIcons        : [
+        {
+          label: "Forum",
+          launch: "Applicationforum"
+        }
+      ],
       hotkeys             : {
         WINDOW_MOVE_UP : 'ALT+UP',
         WINDOW_MOVE_DOWN : 'ALT+DOWN',

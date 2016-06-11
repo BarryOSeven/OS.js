@@ -6,11 +6,8 @@
   "mime": [
     "text\\/html"
   ],
-  "category": "utilities",
+  "category": "tools",
   "preload":    [
     {"src": "main.js", "type": "javascript"}
   ]
 }
-
-
-

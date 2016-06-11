@@ -20,7 +20,7 @@
     "^audio",
     "osjs\\/playlist"
   ],
-  "category": "multimedia",
+  "category": "tools",
   "icon": "status/audio-volume-high.png",
   "singular": true,
   "compability": [
