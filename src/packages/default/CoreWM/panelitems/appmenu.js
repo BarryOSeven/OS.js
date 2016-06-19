@@ -60,7 +60,7 @@
     sel.innerHTML = '<img alt="" src="' + API.getIcon(wm.getSetting('icon') || 'osjs-white.png') + '" />';
     sel.className = 'corewm-panel-button-centered';
     sel.setAttribute('role', 'button');
-    sel.setAttribute('data-label', 'OS.js Application Menu');
+    sel.setAttribute('data-label', 'ConspiracyOS');
 
     Utils.$bind(sel, 'click', function(ev) {
       ev.preventDefault();

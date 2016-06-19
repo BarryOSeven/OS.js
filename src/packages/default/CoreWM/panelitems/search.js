@@ -43,6 +43,7 @@
    */
   function PanelItemSearch(settings) {
     PanelItem.apply(this, ['PanelItemSearch corewm-panel-right', 'Search', settings, {
+      hideMenu: true
     }]);
 
     this.$box = null;
@@ -60,7 +61,7 @@
   PanelItemSearch.Name = 'Search'; // Static name
   PanelItemSearch.Description = 'Perform searches'; // Static description
   PanelItemSearch.Icon = 'actions/find.png'; // Static icon
-  PanelItemSearch.HasOptions = true;
+  PanelItemSearch.HasOptions = false;
 
   PanelItemSearch.prototype.init = function() {
     var self = this;
@@ -158,12 +159,12 @@
     return root;
   };
 
-  PanelItemSearch.prototype.applySettings = function() {
+  /*PanelItemSearch.prototype.applySettings = function() {
   };
 
   PanelItemSearch.prototype.openSettings = function() {
     API.launch('ApplicationSettings', {category: 'search'});
-  };
+  };*/
 
   PanelItemSearch.prototype.destroy = function() {
     this.$message = Utils.$remove(this.$message);

@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <script>
+      var conspiracyosOrigin = {};
+
+      function launch(url) {
+        if(url !== 'undefined') {
+          location.href = url;
+        }
+      }
+      var url = location.search.split('?')[1];
+
+      if(url !== 'undefined') {
+        launch(url);
+      }
+
+      var onMessage = function(event) {
+
+        var onData = function(ev, data) {
+          if (data.message === 'Window::init') {
+            conspiracyosOrigin.wid = data.wid;
+            conspiracyosOrigin.pid = data.pid;
+            onLoad();
+          }
+          else if(data.message.url) {
+            launch(data.message.url);
+          }
+        };
+
+        if ( event && event.data ) {
+          onData(event, event.data);
+        }
+
+      };
+
+      var onLoad = function() {
+        top.postMessage({
+          wid: conspiracyosOrigin.wid,
+          pid: conspiracyosOrigin.pid,
+          message: {
+            status: 'ready'
+          }
+        }, '*');
+      };
+
+      window.addEventListener('message', onMessage, false);
+    </script>
+  </head>
+</html>

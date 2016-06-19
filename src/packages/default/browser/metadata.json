@@ -1,0 +1,9 @@
+{
+  "className":  "Applicationbrowser",
+  "name":       "browser",
+  "mime":       "osjs/application",
+  "icon":       "categories/applications-internet.png",
+  "preload":    [
+    {"src": "main.js", "type": "javascript"}
+  ]
+}

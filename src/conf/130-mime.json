@@ -1,6 +1,9 @@
 {
   "mime": {
     "descriptions" : {
+      "conspiracyos/youtube"    : "YouTube Cinematic",
+      "conspiracyos/bookmark"   : "Browser Bookmark",
+
       "image/bmp"               : "Bitmap Image",
       "image/gif"               : "GIF Image",
       "image/jpeg"              : "JPEG Image",
@@ -44,6 +47,9 @@
       "osjs/project"            : "OS.js Project"
     },
     "mapping" : {
+      ".ytb"    : "conspiracyos/youtube",
+      ".url"    : "conspiracyos/bookmark",
+
       ".bmp"    : "image/bmp",
       ".css"    : "text/css",
       ".gif"    : "image/gif",

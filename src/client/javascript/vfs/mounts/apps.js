@@ -85,10 +85,10 @@
    */
   OSjs.VFS.Modules.Apps = OSjs.VFS.Modules.Apps || OSjs.VFS._createMountpoint({
     readOnly: true,
-    description: 'Applications',
+    description: 'Instruments',
     root: 'applications:///',
     match: /^applications\:\/\//,
-    icon: 'places/user-bookmarks.png',
+    icon: 'conspiracyos/tools.png',
     special: true,
     visible: true,
     internal: true,

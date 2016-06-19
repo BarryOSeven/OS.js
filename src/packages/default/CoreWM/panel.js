@@ -128,7 +128,7 @@
         });
       }
 
-      API.createMenu(menu, ev);
+      //API.createMenu(menu, ev);
     }
 
     this._$container = document.createElement('corewm-panel-container');
@@ -309,7 +309,9 @@
     this._itemName = itemName || className.split(' ')[0];
     this._settings = null;
     this._settingsDialog = null;
-
+    if(defaults) {
+      this._hideMenu = defaults.hideMenu || false;
+    }
     if ( settings && (settings instanceof OSjs.Helpers.SettingsFragment) && defaults ) {
       this._settings = settings.mergeDefaults(defaults);
     }
@@ -330,7 +332,7 @@
     this._$container.setAttribute('role', 'toolbar');
     this._$container.className = 'corewm-panel-buttons';
 
-    if ( this._settings ) {
+    if (this._settings && !this._hideMenu) {
       var title = 'Open ' + this._itemName + ' settings'; // FIXME: Locale
       Utils.$bind(this._$root, 'contextmenu', function(ev) {
         ev.stopPropagation();

@@ -43,7 +43,9 @@
    */
   var SettingsManager = {
     storage: {},
-    defaults: {},
+    defaults: {
+      "conspiracyos/youtube": "Applicationyoutubeplayer"
+    },
     watches: []
   };
 

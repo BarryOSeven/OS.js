@@ -63,8 +63,96 @@
       moveOnResize        : true,       // Move windows into viewport on resize
       desktopIcons        : [
         {
+          label: "Library",
+          launch: 'ApplicationFileManager',
+          args: {
+            path: 'library:///'
+          }
+        },
+        {
+          label: "Mysteries",
+          launch: 'ApplicationFileManager',
+          args: {
+            path: 'mysteries:///'
+          }
+        },
+        {
+          label: "Cinema",
+          launch: 'ApplicationFileManager',
+          args: {
+            path: 'cinema:///'
+          }
+        },
+        {
+          label: "Musica",
+          launch: 'ApplicationFileManager',
+          args: {
+            path: 'musica:///'
+          }
+        },
+        {
+          label: "Bookmarks",
+          launch: 'ApplicationFileManager',
+          args: {
+            path: 'bookmarks:///'
+          }
+        },
+        {
+          label: "Software",
+          launch: 'ApplicationFileManager',
+          args: {
+            path: 'software:///'
+          }
+        },
+        {
           label: "Forum",
           launch: "Applicationforum"
+        },
+        {
+          label: "Wolfram Alpha",
+          launch: "ApplicationWolframAlpha"
+        },
+        {
+          label: "Biblioteca Pleyades",
+          launch: "Applicationbrowser",
+          args: {
+            title: "Biblioteca Pleyades",
+            url: 'http://www.bibliotecapleyades.net/esp_tema.htm'
+          }
+        },
+        {
+          label: "Godlike Productions",
+          launch: "Applicationbrowser",
+          args: {
+            title: "Godlike Productions",
+            url: 'http://www.godlikeproductions.com'
+          }
+        },
+        {
+          label: "Above Top Secret",
+          launch: "Applicationbrowser",
+          args: {
+            title: "Above Top Secret",
+            url: 'http://www.abovetopsecret.com'
+          }
+        },
+        {
+          label: "Wisdom World",
+          launch: "Applicationbrowser",
+          args: {
+            title: "Wisdom World",
+            url: 'http://www.wisdomworld.org'
+          }
+        },
+        {
+          label: "Secrets in Plain Sight",
+          launch: "Applicationyoutubeplayer",
+          args: {
+            title: "Secrets in Plain Sight",
+            uri: 'L777RhL_Fz4',
+            width: 640,
+            height: 390
+          }
         }
       ],
       hotkeys             : {

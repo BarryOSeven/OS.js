@@ -1,0 +1,10 @@
+{
+  "className":  "Applicationyoutubeplayer",
+  "name":       "YouTube Player",
+  "mime":       "osjs/application",
+  "icon":       "mimetypes/video.png",
+  "category":   "tools",
+  "preload":    [
+    {"src": "main.js", "type": "javascript"}
+  ]
+}

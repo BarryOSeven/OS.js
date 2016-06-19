@@ -276,4 +276,3 @@
   OSjs.Helpers.IFrameApplicationWindow = IFrameApplicationWindow;
 
 })(OSjs.Core.Application, OSjs.Core.Window, OSjs.Utils, OSjs.VFS, OSjs.GUI);
-

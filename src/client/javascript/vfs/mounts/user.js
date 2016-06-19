@@ -45,14 +45,14 @@
    * @api OSjs.VFS.Modules.User
    */
   OSjs.VFS.Modules.User = OSjs.VFS.Modules.User || OSjs.VFS._createMountpoint({
-    readOnly: false,
+    readOnly: true,
     description: 'Home',
-    root: 'home:///',
+    root: 'userhome:///',
     icon: 'places/folder_home.png',
-    match: /^home\:\/\//,
-    visible: true,
+    match: /^userhome\:\/\//,
+    visible: false,
     internal: true,
-    searchable: true,
+    searchable: false,
     request: OSjs.VFS.Transports.Internal.request
   });
 

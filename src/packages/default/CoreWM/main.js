@@ -316,11 +316,7 @@
     });
 
     document.addEventListener('contextmenu', function(ev) {
-      ev.preventDefault();
-      ev.stopPropagation();
-      OSjs.Applications.CoreWM.showMenu(ev);
-      return true;
-      //return self.onContextMenu(ev);
+      return self.onContextMenu(ev);
     }, true);
 
     document.addEventListener('click', function(ev) {
@@ -587,7 +583,8 @@
     if ( ev.target === document.body ) {
       ev.preventDefault();
       ev.stopPropagation();
-      this.openDesktopMenu(ev);
+      OSjs.Applications.CoreWM.showMenu(ev);
+      //this.openDesktopMenu(ev);
       return false;
     }
     return true;

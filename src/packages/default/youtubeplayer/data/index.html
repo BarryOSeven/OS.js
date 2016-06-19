@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <script>
+      var conspiracyosOrigin = {};
+
+      function launch(uri) {
+        if(uri !== 'undefined') {
+          uri = 'https://www.youtube.com/embed/' + uri + '?autoplay=1';
+          location.href = uri;
+        }
+      }
+      var uri = location.search.split('?')[1];
+
+      if(uri !== 'undefined') {
+        launch(uri);
+      }
+
+      var onMessage = function(event) {
+
+        var onData = function(ev, data) {
+          if (data.message === 'Window::init') {
+            conspiracyosOrigin.wid = data.wid;
+            conspiracyosOrigin.pid = data.pid;
+            onLoad();
+          }
+          else if(data.message.uri) {
+            launch(data.message.uri);
+          }
+        };
+
+        if ( event && event.data ) {
+          onData(event, event.data);
+        }
+
+      };
+
+      var onLoad = function() {
+        top.postMessage({
+          wid: conspiracyosOrigin.wid,
+          pid: conspiracyosOrigin.pid,
+          message: {
+            status: 'ready'
+          }
+        }, '*');
+      };
+
+      window.addEventListener('message', onMessage, false);
+    </script>
+  </head>
+</html>

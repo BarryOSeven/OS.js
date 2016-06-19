@@ -27,68 +27,34 @@
  * @author  Anders Evenrud <andersevenrud@gmail.com>
  * @licence Simplified BSD License
  */
-(function(Utils, API) {
+(function(Application, GUI, Dialogs, Utils, API, VFS) {
   'use strict';
 
-  window.OSjs       = window.OSjs       || {};
-  OSjs.VFS          = OSjs.VFS          || {};
-  OSjs.VFS.Modules  = OSjs.VFS.Modules  || {};
-
   /////////////////////////////////////////////////////////////////////////////
-  // API
+  // APPLICATION
   /////////////////////////////////////////////////////////////////////////////
 
-  var OSjsStorage = {};
-  OSjsStorage.url = function(item, callback) {
-    var root = window.location.pathname || '/';
-    if ( root === '/' || window.location.protocol === 'file:' ) {
-      root = '';
-    }
-
-    var url = item.path.replace(OSjs.VFS.Modules.OSjs.match, root);
-    callback(false, url);
-  };
-
-  /////////////////////////////////////////////////////////////////////////////
-  // WRAPPERS
-  /////////////////////////////////////////////////////////////////////////////
-
-  function makeRequest(name, args, callback, options) {
-    args = args || [];
-    callback = callback || {};
-
-    var restricted = ['write', 'copy', 'move', 'unlink', 'mkdir', 'exists', 'fileinfo', 'trash', 'untrash', 'emptyTrash', 'freeSpace'];
-    if ( OSjsStorage[name] ) {
-      var fargs = args;
-      fargs.push(callback);
-      fargs.push(options);
-      return OSjsStorage[name].apply(OSjsStorage, fargs);
-    } else if ( restricted.indexOf(name) !== -1 ) {
-      return callback(API._('ERR_VFS_UNAVAILABLE'));
-    }
-    OSjs.VFS.Transports.Internal.request.apply(null, arguments);
+  function Applicationforum(args, metadata) {
+    Application.apply(this, ['Applicationforum', args, metadata, {
+      src: 'data/index.html',
+      title: metadata.name,
+      icon: metadata.icon,
+      width: 800,
+      height: 480,
+      allow_resize: true,
+      allow_restore: true,
+      allow_maximize: true
+    }]);
   }
+
+  Applicationforum.prototype = Object.create(Application.prototype);
 
   /////////////////////////////////////////////////////////////////////////////
   // EXPORTS
   /////////////////////////////////////////////////////////////////////////////
 
-  /**
-   * This is a virtual module for showing 'dist' files in OS.js
-   *
-   * @see OSjs.VFS.Transports.Internal
-   * @api OSjs.VFS.Modules.OSjs
-   */
-  OSjs.VFS.Modules.OSjs = OSjs.VFS.Modules.OSjs || OSjs.VFS._createMountpoint({
-    readOnly: true,
-    description: 'ConspiracyOS',
-    root: 'osjs:///',
-    match: /^osjs\:\/\//,
-    icon: 'devices/harddrive.png',
-    visible: false,
-    internal: true,
-    searchable: false,
-    request: makeRequest
-  });
+  OSjs.Applications = OSjs.Applications || {};
+  OSjs.Applications.Applicationforum = OSjs.Applications.Applicationforum || {};
+  OSjs.Applications.Applicationforum.Class = Object.seal(Applicationforum);
 
-})(OSjs.Utils, OSjs.API);
+})(OSjs.Helpers.IFrameApplication, OSjs.GUI, OSjs.Dialogs, OSjs.Utils, OSjs.API, OSjs.VFS);

@@ -63,7 +63,7 @@
     },
 
     "VFS": {
-      "MaxUploadSize": 2097152,
+      "MaxUploadSize": 0,
       "Home": "home:///",
 
       "GoogleDrive": {

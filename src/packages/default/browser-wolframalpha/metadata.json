@@ -1,0 +1,10 @@
+{
+  "className":  "ApplicationWolframAlpha",
+  "name":       "Wolfram Alpha",
+  "mime":       "osjs/application",
+  "icon":       "conspiracyos/wolframalpha.png",
+  "category": "tools",
+  "preload":    [
+    {"src": "main.js", "type": "javascript"}
+  ]
+}

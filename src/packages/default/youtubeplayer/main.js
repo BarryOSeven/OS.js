@@ -34,27 +34,72 @@
   // APPLICATION
   /////////////////////////////////////////////////////////////////////////////
 
-  function Applicationforum(args, metadata) {
-    Application.apply(this, ['Applicationforum', args, metadata, {
-      src: 'data/redirect.html',
-      title: metadata.name,
+  function Applicationyoutubeplayer(args, metadata) {
+    var self = this;
+    this.postLoadParams = {};
+
+    var parseArgs = function(args) {
+
+      var onRead = function(error, data) {
+        if (error) {
+          console.log(error);
+          return;
+        }
+
+        var json = JSON.parse(data);
+
+        self.postLoadParams.uri = json["uri"];
+        self.postLoadParams.title = json["title"];
+      };
+
+      if(args["file"] && args["file"]["mime"] && args["file"]["mime"] === "conspiracyos/youtube") {
+        VFS.read(args["file"]["path"], onRead, {"type":"text"});
+      }
+    };
+
+    Application.apply(self, ['Applicationyoutubeplayer', args, metadata, {
+      src: 'data/index.html?' + args.uri,
+      title: args.title || metadata.name,
       icon: metadata.icon,
-      width: 800,
-      height: 480,
+      width: args.width || 640,
+      height: args.height || 390,
       allow_resize: true,
       allow_restore: true,
       allow_maximize: true
     }]);
+
+    parseArgs(args);
   }
 
-  Applicationforum.prototype = Object.create(Application.prototype);
+  Applicationyoutubeplayer.prototype = Object.create(Application.prototype);
+
+  Applicationyoutubeplayer.prototype.loadUri = function(uri, title) {
+    console.log('loadUri');
+    this.postMessage({uri: uri, title: title});
+  };
+
+  Applicationyoutubeplayer.prototype.onPostMessage = function(message, ev) {
+    var self = this;
+
+    if(message.status === 'ready') {
+      var checkParams = function() {
+        if(self.postLoadParams.uri && self.postLoadParams.title) {
+          self.loadUri(self.postLoadParams.uri, self.postLoadParams.title);
+        } else {
+          setTimeout(this, 50);
+        }
+      }
+
+      checkParams();
+    }
+  };
 
   /////////////////////////////////////////////////////////////////////////////
   // EXPORTS
   /////////////////////////////////////////////////////////////////////////////
 
   OSjs.Applications = OSjs.Applications || {};
-  OSjs.Applications.Applicationforum = OSjs.Applications.Applicationforum || {};
-  OSjs.Applications.Applicationforum.Class = Object.seal(Applicationforum);
+  OSjs.Applications.Applicationyoutubeplayer = OSjs.Applications.Applicationyoutubeplayer || {};
+  OSjs.Applications.Applicationyoutubeplayer.Class = Object.seal(Applicationyoutubeplayer);
 
 })(OSjs.Helpers.IFrameApplication, OSjs.GUI, OSjs.Dialogs, OSjs.Utils, OSjs.API, OSjs.VFS);
