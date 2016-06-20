@@ -42,7 +42,6 @@
       "UserPackages":  "home:///.packages",
       "UserMetadata":  "home:///.packages/packages.json"
     },
-
     "SettingsManager": {
       "VFS": {
         "scandir": {
