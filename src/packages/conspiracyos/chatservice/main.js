@@ -154,7 +154,7 @@
     this.chatPanel.onConnected();
 
     this.join();
-    this.send();
+    //this.send();
     //this.dev();
   }
 
