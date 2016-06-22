@@ -1,0 +1,18 @@
+{
+  "className":  "nativenotificationsExtension",
+  "type":       "extension",
+  "build":      {
+    "copy": [
+      "metadata.json",
+      "extension.js"
+    ]
+  },
+  "conf": [
+  ],
+  "sources":    [
+    {"src": "extension.js", "type": "javascript"}
+  ]
+}
+
+
+

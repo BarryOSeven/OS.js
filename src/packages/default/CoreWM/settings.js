@@ -107,52 +107,6 @@
         {
           label: "Forum",
           launch: "Applicationforum"
-        },
-        {
-          label: "Wolfram Alpha",
-          launch: "ApplicationWolframAlpha"
-        },
-        {
-          label: "Biblioteca Pleyades",
-          launch: "Applicationbrowser",
-          args: {
-            title: "Biblioteca Pleyades",
-            url: 'http://www.bibliotecapleyades.net/esp_tema.htm'
-          }
-        },
-        {
-          label: "Godlike Productions",
-          launch: "Applicationbrowser",
-          args: {
-            title: "Godlike Productions",
-            url: 'http://www.godlikeproductions.com'
-          }
-        },
-        {
-          label: "Above Top Secret",
-          launch: "Applicationbrowser",
-          args: {
-            title: "Above Top Secret",
-            url: 'http://www.abovetopsecret.com'
-          }
-        },
-        {
-          label: "Wisdom World",
-          launch: "Applicationbrowser",
-          args: {
-            title: "Wisdom World",
-            url: 'http://www.wisdomworld.org'
-          }
-        },
-        {
-          label: "Secrets in Plain Sight",
-          launch: "Applicationyoutubeplayer",
-          args: {
-            title: "Secrets in Plain Sight",
-            uri: 'L777RhL_Fz4',
-            width: 640,
-            height: 390
-          }
         }
       ],
       hotkeys             : {
@@ -181,6 +135,7 @@
             /*{name: 'Buttons', settings: {}},*/
             {name: 'WindowList', settings: {}},
             {name: 'NotificationArea', settings: {}},
+            {name: 'Chat', settings: {}},
             {name: 'Search', settings: {}},
             {name: 'Clock', settings: {}}
           ]

@@ -1,0 +1,29 @@
+{
+  "className": "chatserviceService",
+  "type": "service",
+  "name": "chatserviceService",
+  "icon": "categories/applications-system.png",
+  "autostart": true,
+  "preload": [
+    {
+      "src": "main.js",
+      "type": "javascript"
+    },
+    {
+      "src": "strophe.js",
+      "type": "javascript"
+    },
+    {
+      "src": "strophe.muc.js",
+      "type": "javascript"
+    },
+    {
+      "src": "name_generator.js",
+      "type": "javascript"
+    },
+    {
+      "src": "egyptian_set.js",
+      "type": "javascript"
+    }
+  ]
+}

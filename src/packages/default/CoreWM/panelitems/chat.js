@@ -41,8 +41,8 @@
   /**
    * PanelItem: Search
    */
-  function PanelItemSearch(settings) {
-    PanelItem.apply(this, ['PanelItemSearch corewm-panel-right', 'Search', settings, {
+  function PanelItemChat(settings) {
+    PanelItem.apply(this, ['PanelItemChat corewm-panel-right', 'Chat', settings, {
       hideMenu: true
     }]);
 
@@ -55,20 +55,20 @@
     this.currentCount = 0;
   }
 
-  PanelItemSearch.prototype = Object.create(PanelItem.prototype);
-  PanelItemSearch.constructor = PanelItem;
+  PanelItemChat.prototype = Object.create(PanelItem.prototype);
+  PanelItemChat.constructor = PanelItem;
 
-  PanelItemSearch.Name = 'Search'; // Static name
-  PanelItemSearch.Description = 'Perform searches'; // Static description
-  PanelItemSearch.Icon = 'actions/find.png'; // Static icon
-  PanelItemSearch.HasOptions = false;
+  PanelItemChat.Name = 'Chat'; // Static name
+  PanelItemChat.Description = 'Show chat status'; // Static description
+  PanelItemChat.Icon = 'apps/config-users.png'; // Static icon
+  PanelItemChat.HasOptions = false;
 
-  PanelItemSearch.prototype.init = function() {
+  PanelItemChat.prototype.init = function() {
     var self = this;
     var root = PanelItem.prototype.init.apply(this, arguments);
 
     var img = document.createElement('img');
-    img.src = API.getIcon('actions/search.png');
+    img.src = API.getIcon('apps/config-users.png');
 
     var input = document.createElement('input');
     input.setAttribute('type', 'text');
@@ -166,7 +166,7 @@
     API.launch('ApplicationSettings', {category: 'search'});
   };*/
 
-  PanelItemSearch.prototype.destroy = function() {
+  PanelItemChat.prototype.destroy = function() {
     this.$message = Utils.$remove(this.$message);
     this.$box = Utils.$remove(this.$box);
 
@@ -183,7 +183,7 @@
     PanelItem.prototype.destroy.apply(this, arguments);
   };
 
-  PanelItemSearch.prototype.launch = function(target) {
+  PanelItemChat.prototype.launch = function(target) {
     var launch = target.getAttribute('data-launch');
     var args = JSON.parse(target.getAttribute('data-args'));
     var file = target.getAttribute('data-file');
@@ -203,7 +203,7 @@
     this.hide();
   };
 
-  PanelItemSearch.prototype.show = function() {
+  PanelItemChat.prototype.show = function() {
     if ( !this.$box || this.visible ) {
       return;
     }
@@ -222,7 +222,7 @@
     this.$message.style.display = 'none';
   };
 
-  PanelItemSearch.prototype.hide = function() {
+  PanelItemChat.prototype.hide = function() {
     if ( !this.$box || !this.visible ) {
       return;
     }
@@ -231,7 +231,7 @@
     this.visible = false;
   };
 
-  PanelItemSearch.prototype.search = function(q) {
+  PanelItemChat.prototype.search = function(q) {
     if ( !this.$box ) {
       return;
     }
@@ -246,14 +246,14 @@
     var self = this;
     OSjs.Core.getSearchEngine().search(q, {limit: 10, recursive: true}, function(errors, result) {
       if ( errors.length ) {
-        console.error('PanelItemSearch::search()', 'errors', errors);
+        console.error('PanelItemChat::search()', 'errors', errors);
       } else {
         self.renderResult(result);
       }
     });
   };
 
-  PanelItemSearch.prototype.renderResult = function(list) {
+  PanelItemChat.prototype.renderResult = function(list) {
     if ( !this.$box ) {
       return;
     }
@@ -299,7 +299,7 @@
     });
   };
 
-  PanelItemSearch.prototype.updateSelection = function() {
+  PanelItemChat.prototype.updateSelection = function() {
     var root = this.$box.querySelector('ul');
     var child = root.children[this.currentIndex];
 
@@ -310,7 +310,7 @@
     Utils.$addClass(child, 'active');
   };
 
-  PanelItemSearch.prototype.navigateUp = function() {
+  PanelItemChat.prototype.navigateUp = function() {
     if ( !this.currentCount ) {
       return;
     }
@@ -324,7 +324,7 @@
     this.updateSelection();
   };
 
-  PanelItemSearch.prototype.navigateDown = function() {
+  PanelItemChat.prototype.navigateDown = function() {
     if ( !this.currentCount ) {
       return;
     }
@@ -338,7 +338,7 @@
     this.updateSelection();
   };
 
-  PanelItemSearch.prototype.navigateOpen = function() {
+  PanelItemChat.prototype.navigateOpen = function() {
     if ( this.currentIndex === -1 || !this.currentCount ) {
       return;
     }
@@ -357,7 +357,7 @@
   OSjs.Applications                                    = OSjs.Applications || {};
   OSjs.Applications.CoreWM                             = OSjs.Applications.CoreWM || {};
   OSjs.Applications.CoreWM.PanelItems                  = OSjs.Applications.CoreWM.PanelItems || {};
-  OSjs.Applications.CoreWM.PanelItems.Search           = PanelItemSearch;
+  OSjs.Applications.CoreWM.PanelItems.Chat           = PanelItemChat;
 
 })(
   OSjs.Applications.CoreWM.Class,

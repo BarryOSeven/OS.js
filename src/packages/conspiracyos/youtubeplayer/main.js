@@ -67,14 +67,13 @@
       allow_restore: true,
       allow_maximize: true
     }]);
-
+  
     parseArgs(args);
   }
 
   Applicationyoutubeplayer.prototype = Object.create(Application.prototype);
 
   Applicationyoutubeplayer.prototype.loadUri = function(uri, title) {
-    console.log('loadUri');
     this.postMessage({uri: uri, title: title});
   };
 
