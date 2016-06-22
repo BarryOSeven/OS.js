@@ -60,15 +60,20 @@
 
   PanelItemChat.Name = 'Chat'; // Static name
   PanelItemChat.Description = 'Show chat status'; // Static description
-  PanelItemChat.Icon = 'apps/config-users.png'; // Static icon
+  PanelItemChat.Icon = 'conspiracyos/chat_idle.png'; // Static icon
   PanelItemChat.HasOptions = false;
+
+  PanelItemChat.prototype.panelImage = null;
+  PanelItemChat.prototype.iconTimer = null;
+  PanelItemChat.prototype.isConnected = false;
 
   PanelItemChat.prototype.init = function() {
     var self = this;
     var root = PanelItem.prototype.init.apply(this, arguments);
 
     var img = document.createElement('img');
-    img.src = API.getIcon('apps/config-users.png');
+    img.src = API.getIcon('conspiracyos/chat_idle.png');
+    this.panelImage = img;
 
     var input = document.createElement('input');
     input.setAttribute('type', 'text');
@@ -113,14 +118,21 @@
     this.events.push(Utils.$bind(root, 'click', function(ev) {
       ev.stopPropagation();
 
-      if ( self.visible ) {
+      //open chat window, reset icon
+      if(self.isConnected) {
+        self.panelImage.src = API.getIcon('conspiracyos/chat_connected.png');
+      } else {
+        self.panelImage.src = API.getIcon('conspiracyos/chat_idle.png');
+      }
+
+      /*if ( self.visible ) {
         self.hide();
       } else {
         self.show();
-      }
+      }*/
     }));
 
-    this.events.push(Utils.$bind(input, 'mousedown', function(ev) {
+    /*this.events.push(Utils.$bind(input, 'mousedown', function(ev) {
       ev.stopPropagation();
     }));
 
@@ -148,7 +160,7 @@
       if ( input ) {
         input.focus();
       }
-    }));
+    }));*/
 
     var li = document.createElement('li');
     li.appendChild(img);
@@ -158,6 +170,52 @@
 
     return root;
   };
+
+  PanelItemChat.prototype.onDisconnected = function() {
+    this.isConnected = false;
+    this.panelImage.src = API.getIcon('conspiracyos/chat_idle.png');
+  };
+
+  PanelItemChat.prototype.onConnected = function() {
+    this.isConnected = true;
+    this.panelImage.src = API.getIcon('conspiracyos/chat_connected.png');
+  };
+
+
+  PanelItemChat.prototype.onMessage = function(message) {
+    var self = this;
+    var pmIcon = API.getIcon('conspiracyos/chat_pm.png');
+
+    var onChatMessage = function() {
+      clearTimeout(self.iconTimer);
+      self.panelImage.src = pmIcon;
+    };
+
+    var onGroupchatMessage = function() {
+      //check if no PM is present (more urgent)
+      if(self.panelImage.src.indexOf(pmIcon) == -1) {
+        clearTimeout(self.iconTimer);
+        self.panelImage.src = API.getIcon('conspiracyos/chat_new.png');
+
+        var switchUrgence = function() {
+          self.panelImage.src = API.getIcon('conspiracyos/chat_messages.png');
+        };
+
+        self.iconTimer = setTimeout(switchUrgence, 5000);
+      }
+    };
+
+    switch(message.type) {
+      case "chat":
+        onChatMessage();
+        break;
+      case "groupchat":
+        onGroupchatMessage();
+        break;
+    }
+
+  };
+
 
   /*PanelItemSearch.prototype.applySettings = function() {
   };
@@ -357,7 +415,7 @@
   OSjs.Applications                                    = OSjs.Applications || {};
   OSjs.Applications.CoreWM                             = OSjs.Applications.CoreWM || {};
   OSjs.Applications.CoreWM.PanelItems                  = OSjs.Applications.CoreWM.PanelItems || {};
-  OSjs.Applications.CoreWM.PanelItems.Chat           = PanelItemChat;
+  OSjs.Applications.CoreWM.PanelItems.Chat             = PanelItemChat;
 
 })(
   OSjs.Applications.CoreWM.Class,

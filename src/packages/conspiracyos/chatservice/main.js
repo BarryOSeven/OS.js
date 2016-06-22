@@ -52,8 +52,8 @@
   chatserviceService.prototype.chatPanel = null;
 
   chatserviceService.prototype.destroy = function() {
-    //logout from xmpp
     this.connection.disconnect();
+    this.chatPanel.onDisconnected();
 
     if ( Service.prototype.destroy.apply(this, arguments) ) {
       return true;
@@ -64,11 +64,9 @@
   chatserviceService.prototype.init = function(settings, metadata) {
     Service.prototype.init.apply(this, arguments);
 
-    if(!OSjs.Applications.CoreWM.PanelItems.Chat) {
-      console.log('Dependency error: Chat panelitem not found');
-      return;
-    }
-    this.chatPanel = OSjs.Applications.CoreWM.PanelItems.Chat;
+    var windowManager = OSjs.Core.getWindowManager();
+    var panel = windowManager.getPanel();
+    chatserviceService.prototype.chatPanel = panel.getItemByType(OSjs.Applications.CoreWM.PanelItems.Chat);
 
     var self = this;
     this.connection = new Strophe.Connection("ws://chat.conspiracyos.com:5280/websocket");
@@ -102,7 +100,6 @@
     this.user.name = generate_name('egyptian');
 
     this.connection.connect(this.user.name + "@chat.conspiracyos.com", "", onConnected);
-    //login to xmpp
   };
 
   chatserviceService.prototype.onConnected = function() {
@@ -129,6 +126,8 @@
           break;
       }
 
+      chatserviceService.prototype.chatPanel.onMessage(message);
+
       return true;
     };
 
@@ -152,9 +151,11 @@
 
     this.connection.addHandler(onMessage, null, 'message', null, null,  null);
 
-    this.join();
+    this.chatPanel.onConnected();
 
-    this.dev();
+    this.join();
+    this.send();
+    //this.dev();
   }
 
   chatserviceService.prototype.dev = function() {
@@ -189,11 +190,12 @@
       to: roomJid,
       type: 'set'
     });
-    /*.c("query", {
-        //xmlns: Strophe.NS.MUC_USER
-    });*/
+    /*
+    .c("query", {
+        xmlns: Strophe.NS.CLIENT
+    });
 
-    /*iq.c("x", {
+    iq.c("x", {
         xmlns: "jabber:x:data",
         type: "submit"
     });*/
