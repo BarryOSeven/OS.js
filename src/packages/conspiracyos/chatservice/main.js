@@ -73,10 +73,10 @@
     var self = this;
     this.connection = new Strophe.Connection("ws://chat.conspiracyos.com:5280/websocket");
 
-    //this.connection.rawInput = function (data) { console.log('RECV: ' + data); };
-    //this.connection.rawOutput = function (data) { console.log('SEND: ' + data); };
+    this.connection.rawInput = function (data) { console.log('RECV: ' + data); };
+    this.connection.rawOutput = function (data) { console.log('SEND: ' + data); };
 
-    //Strophe.log = function (level, msg) { console.log('LOG: ' + msg); };
+    Strophe.log = function (level, msg) { console.log('LOG: ' + msg); };
 
     var onConnected = function(status) {
       switch(status) {
@@ -180,7 +180,17 @@
   chatserviceService.prototype.join = function(room) {
     var muc = this.connection.muc;
 
-    muc.join(room, this.user.name);
+    var onSuccess = function() {
+      console.log('Room joined');
+    };
+
+    var onError = function(error) {
+      console.log(error);
+    };
+
+    //muc.createInstantRoom(room, onSuccess, onError);
+    
+    muc.join(room, this.user.name, onSuccess, onError);
   };
 
   chatserviceService.prototype.fetchUserlist = function(room) {

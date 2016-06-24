@@ -79,7 +79,7 @@
     var self = this;
 
     var updateSideView = function() {
-      if(self.userListIterator + 1 === self.app.userList.length) {
+      if(self.userListIterator > 0 && self.userListIterator + 1 === self.app.userList.length) {
         return;
       }
       
@@ -109,7 +109,7 @@
     };
 
     var updateChatView = function() {
-      if(self.groupChatIterator + 1 === self.app.groupChat.length) {
+      if(self.groupChatIterator > 0 && self.groupChatIterator + 1 === self.app.groupChat.length) {
         return;
       }
 
