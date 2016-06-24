@@ -1,7 +1,7 @@
 {
   "className":  "Applicationconverse",
   "name":       "Converse",
-  "mime":       null,
+  "mime":       "osjs/application",
   "icon":       "conspiracyos/chat_connected.png",
   "preload":    [
     {"src": "main.js", "type": "javascript"},

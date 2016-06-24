@@ -118,18 +118,17 @@
     this.events.push(Utils.$bind(root, 'click', function(ev) {
       ev.stopPropagation();
 
-      //open chat window, reset icon
+      //reset icon
       if(self.isConnected) {
         self.panelImage.src = API.getIcon('conspiracyos/chat_connected.png');
       } else {
         self.panelImage.src = API.getIcon('conspiracyos/chat_idle.png');
       }
 
-      /*if ( self.visible ) {
-        self.hide();
-      } else {
-        self.show();
-      }*/
+      if(!self.isChatOpened()) {
+        API.launch('Applicationconverse', {});
+      }
+      
     }));
 
     /*this.events.push(Utils.$bind(input, 'mousedown', function(ev) {
@@ -169,6 +168,20 @@
     document.body.appendChild(this.$box);
 
     return root;
+  };
+
+  PanelItemChat.prototype.isChatOpened = function() {
+    var processes = API.getProcesses();
+    var isChatOpened = false;
+    for(var i=0; i<processes.length; i++) {
+      var process = processes[i];
+      if(process && process.__pname && process.__pname === "Applicationconverse") {
+          isChatOpened = true;
+          break;
+      }
+    }
+
+    return isChatOpened;
   };
 
   PanelItemChat.prototype.onDisconnected = function() {

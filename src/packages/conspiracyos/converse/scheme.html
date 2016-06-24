@@ -1,27 +1,31 @@
 <application-window data-id="converseWindow">
-  <!--<gui-gui-tabs>
-      <gui-gui-tabs-container data-grow="0" data-shrink="1" data-basis="auto">
-        <gui-menu-bar>
+  <gui-vbox>
+    <!-- Menu bar -->
+    <gui-vbox-container data-grow="0" data-shrink="1" data-basis="auto">
+      <gui-menu-bar>
+        <gui-menu-bar-entry data-label="Status">
+          <gui-menu data-id="SubmenuStatus">
+            <gui-menu-entry data-id="SubmenuStatusOnline" data-label="Online"></gui-menu-entry>
+            <gui-menu-entry data-id="SubmenuStatusAway" data-label="Away"></gui-menu-entry>
+          </gui-menu>
+        </gui-menu-bar-entry>
+    </gui-vbox-container>
 
-          <gui-menu-bar-entry data-label="LBL_FILE">
-            <gui-menu data-id="SubmenuFile">
-              <gui-menu-entry data-id="MenuClose" data-label="LBL_CLOSE"></gui-menu-entry>
-            </gui-menu>
-          </gui-menu-bar-entry>
+    <!-- Content -->
+    <gui-vbox-container data-grow="1" data-shrink="0" data-basis="auto" data-fill="true">
+      <gui-paned-view>
+        <!-- SIDE PANEL -->
+        <gui-paned-view-container data-basis="150px" data-grow="0" data-shrink="0" data-multiple="false" data-id="MainContainer">
+          <gui-list-view data-id="UserView" data-single-click="true">
+          </gui-list-view>
+        </gui-paned-view-container>
 
-        </gui-menu-bar>
-      </gui-vbox-container>
-
-      <gui-vbox-container data-grow="0" data-shrink="1" data-basis="auto">
-         <gui-button-bar>
-            <gui-button data-id="MyButtonOne">My Label</gui-button>
-            <gui-button data-id="MyButtonTwo" data-icon="stock://16x16/places/folder_home.png">My Label and Icon</gui-button>
-          </gui-button-bar>
-      </gui-vbox-container>
-
-      <gui-vbox-container data-grow="1" data-shrink="0" data-basis="auto" data-fill="true">
-        <gui-textarea data-id="Text"></gui-textarea>
-      </gui-vbox-container>
-
-    </gui-vbox>-->
+        <!-- FILE VIEW -->
+        <gui-paned-view-container data-grow="1" data-shrink="1">
+          <gui-list-view data-id="ChatView" data-single-click="true">
+          </gui-list-view>
+        </gui-paned-view-container>
+      </gui-paned-view>
+    </gui-vbox-container>
+  </gui-vbox>
 </application-window>

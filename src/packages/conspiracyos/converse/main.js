@@ -38,29 +38,118 @@
     Window.apply(this, ['ApplicationconverseWindow', {
       icon: metadata.icon,
       title: metadata.name,
-      width: 400,
-      height: 200
+      width: 800,
+      height: 400
     }, app, scheme]);
   }
 
   ApplicationconverseWindow.prototype = Object.create(Window.prototype);
   ApplicationconverseWindow.constructor = Window.prototype;
 
+  ApplicationconverseWindow.prototype.app = null;
+  ApplicationconverseWindow.prototype.scheme = null;
+  ApplicationconverseWindow.prototype.groupChatIterator = 0;
+  ApplicationconverseWindow.prototype.userListIterator = 0;
+  
   ApplicationconverseWindow.prototype.init = function(wmRef, app, scheme) {
     var root = Window.prototype.init.apply(this, arguments);
     var self = this;
 
+    this.app = app;
+
     // Load and render `scheme.html` file
-    scheme.render(this, 'converseWindow', root);
+    this.scheme = scheme;
+    this.scheme.render(this, 'converseWindow', root);
 
     // Put your GUI code here (or make a new prototype function and call it):
+    //ApplicationconverseWindow.prototype.userList;
+    
+    this.app.chatService = API.getProcess('chatserviceService', true);
+    this.app.chatService.view = this;
+
+    this.app.userList = this.app.chatService.userList;
+    this.app.groupChat = this.app.chatService.groupChat;
+
+    this.update();
 
     return root;
+  };
+
+  ApplicationconverseWindow.prototype.update = function() {
+    var self = this;
+
+    var updateSideView = function() {
+      if(self.userListIterator + 1 === self.app.userList.length) {
+        return;
+      }
+      
+      var sideView = self.scheme.find(self, 'UserView');
+      var sideViewItems = [];
+
+      var temporaryIterator = 0;
+      for(var i=self.userListIterator; i<self.app.userList.length; i++) {
+        var sideViewItem = {
+          value: self.app.userList[i].jid,
+          className: 'user',
+          columns: [
+            {
+              label: self.app.userList[i].name
+              //con: API.getIcon('emblems/emblem-readonly.png', '16x16')
+            }
+          ],
+          onCreated: function(nel) {}
+        };
+        
+        sideViewItems.push(sideViewItem);
+        temporaryIterator = i;
+      } 
+      self.userListIterator = temporaryIterator;
+      
+      sideView.add(sideViewItems);
+    };
+
+    var updateChatView = function() {
+      if(self.groupChatIterator + 1 === self.app.groupChat.length) {
+        return;
+      }
+
+      var chatView = self.scheme.find(self, 'ChatView');
+      var chatViewItems = [];
+
+      var temporaryIterator = 0;
+      
+      for(var i=self.groupChatIterator + 1; i<self.app.groupChat.length; i++) {
+        var message = self.app.groupChat[i];
+        
+        var chatViewItem = {
+          value: message.to,
+          className: 'message',
+          columns: [
+            {
+              label: message.username + ': ' + message.message
+              //icon: API.getIcon('emblems/emblem-readonly.png', '16x16')
+            }
+          ],
+          onCreated: function(nel) {}
+        };
+        
+        chatViewItems.push(chatViewItem);
+        temporaryIterator = i;
+      }
+      self.groupChatIterator = temporaryIterator;
+
+      chatView.add(chatViewItems);
+    };
+      
+    updateSideView();
+    updateChatView();
   };
 
   ApplicationconverseWindow.prototype.destroy = function() {
     // This is where you remove objects, dom elements etc attached to your
     // instance. You can remove this if not used.
+    this.app.chatService.view = null;
+
     if ( Window.prototype.destroy.apply(this, arguments) ) {
       return true;
     }
@@ -77,6 +166,10 @@
 
   Applicationconverse.prototype = Object.create(Application.prototype);
   Applicationconverse.constructor = Application;
+
+  Applicationconverse.prototype.userList = null;
+  Applicationconverse.prototype.groupChat = null;
+  Applicationconverse.prototype.chatService = null;
 
   Applicationconverse.prototype.destroy = function() {
     // This is where you remove objects, dom elements etc attached to your

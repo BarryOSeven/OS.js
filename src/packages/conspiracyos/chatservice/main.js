@@ -48,8 +48,10 @@
   };
 
   chatserviceService.prototype.chats = {};
-  chatserviceService.prototype.groupchats = {};
+  chatserviceService.prototype.groupChat = [];
   chatserviceService.prototype.chatPanel = null;
+  chatserviceService.prototype.userList = [];
+  chatserviceService.prototype.view = null;
 
   chatserviceService.prototype.destroy = function() {
     this.connection.disconnect();
@@ -102,6 +104,12 @@
     this.connection.connect(this.user.name + "@chat.conspiracyos.com", "", onConnected);
   };
 
+  chatserviceService.prototype.updateView = function() {
+    if(this.view && this.view.update) {
+      this.view.update();
+    }
+  };
+
   chatserviceService.prototype.onConnected = function() {
     var self = this;
 
@@ -110,11 +118,11 @@
     var onMessage = function(msg) {
 
       var message = {
-        messages: msg.getElementsByTagName('body'),
+        message: msg.getElementsByTagName('body')[0].textContent,
         to: msg.getAttribute('to'),
         from: msg.getAttribute('from'),
         type: msg.getAttribute('type'),
-        username: msg.getAttribute('from').split('@')
+        username: msg.getAttribute('from').split('/')[1]
       };
 
       switch(message.type) {
@@ -127,6 +135,7 @@
       }
 
       chatserviceService.prototype.chatPanel.onMessage(message);
+      self.updateView();
 
       return true;
     };
@@ -137,31 +146,23 @@
       }
       self.chats[message.from].push(message);
       var onClickEvent = function(event) {};
-      self.notify(message.username, message.messages[0].textContent, onClickEvent);
-      console.log('[C] ' + message.username + ' - ' + message.messages[0].textContent);
+      self.notify(message.username, message.message, onClickEvent);
+      console.log('[C] ' + message.username + ' - ' + message.message);
     };
 
     var onGroupchat = function(message) {
-      if(typeof self.groupchats[message.from] !== "object") {
-        self.groupchats[message.from] = [];
-      }
-      self.groupchats[message.from].push(message);
-      console.log('[G] ' + message.username + ' - ' + message.messages[0].textContent);
+      self.groupChat.push(message);
+      console.log('[G] ' + message.username + ' - ' + message.message);
     };
 
     this.connection.addHandler(onMessage, null, 'message', null, null,  null);
 
     this.chatPanel.onConnected();
 
-    this.join();
-    //this.send();
-    //this.dev();
-  }
+    var room = 'conspiracyos@conference.chat.conspiracyos.com';
 
-  chatserviceService.prototype.dev = function() {
-    console.log("[DEV]");
-    //console.log(OSjs.Applications.CoreWM.PanelItems.Chat);
-    console.log("[/DEV]");
+    this.join(room);
+    this.fetchUserlist(room);
   };
 
   chatserviceService.prototype.notify = function(username, message, onClick) {
@@ -176,35 +177,34 @@
     API.createNativeNotification(options);
   };
 
-  chatserviceService.prototype.join = function() {
-    var userName = this.user.name,
-    serverName = "chat.conspiracyos.com",
-    userJid = userName + '@' + serverName,
-    roomJid = 'conspiracyos' + '@conference.' + serverName,
-    iq;
+  chatserviceService.prototype.join = function(room) {
+    var muc = this.connection.muc;
 
-    var d = $pres({'from': userJid, 'to': roomJid + '/' + userName})
-    this.connection.send(d.tree());
+    muc.join(room, this.user.name);
+  };
 
-    iq = $iq({
-      to: roomJid,
-      type: 'set'
-    });
-    /*
-    .c("query", {
-        xmlns: Strophe.NS.CLIENT
-    });
+  chatserviceService.prototype.fetchUserlist = function(room) {
+    var self = this;
+    var muc = this.connection.muc;
 
-    iq.c("x", {
-        xmlns: "jabber:x:data",
-        type: "submit"
-    });*/
+    var onSuccess = function(iq) {
+      var userItems = iq.getElementsByTagName('item');
+      var users = [];
+      for(var i=0; i<userItems.length; i++) {
+        var user = {
+          name: userItems[i].getAttribute('name'),
+          jid: userItems[i].getAttribute('jid')
+        };
+        users.push(user);
+      }
+      self.userList = users;
+    };
 
-    //config room not used because predefined, leave example code here
-    //iq.c('field', { 'var': 'FORM_TYPE' }).c('value').t('http://jabber.org/protocol/muc#roomconfig').up().up();
-    //iq.c('field', { 'var': 'muc#roomconfig_publicroom' }).c('value').t('1').up().up();
+    var onError = function(error) {
+      console.log(error);
+    };
 
-    this.connection.sendIQ(iq.tree(), function () { console.log('success'); }, function (err) { console.log('error', err); });
+    muc.queryOccupants(room, onSuccess, onError);
   };
 
   chatserviceService.prototype.send = function(msg) {
