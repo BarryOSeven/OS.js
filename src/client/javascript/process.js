@@ -30,10 +30,6 @@
 (function(Utils, API) {
   'use strict';
 
-  window.OSjs = window.OSjs || {};
-  OSjs.API    = OSjs.API    || {};
-  OSjs.Core   = OSjs.Core   || {};
-
   /////////////////////////////////////////////////////////////////////////////
   // GLOBALS
   /////////////////////////////////////////////////////////////////////////////
@@ -368,49 +364,6 @@
       method: method,
       'arguments': args, __loading: showLoading
     }, cb);
-  };
-
-  /**
-   * Call the ApplicationAPI
-   *
-   * This is used for calling 'api.php' or 'api.js' in your Application.
-   *
-   * On Lua or Arduino it is called 'server.lua'
-   *
-   * WARNING: THIS METHOD WILL BE DEPRECATED
-   *
-   * @param   String      method      Name of method
-   * @param   Object      args        Arguments in JSON
-   * @param   Function    onSuccess   When request is done callback fn(result)
-   * @param   Function    onError     When an error occured fn(error)
-   * @param   boolean     showLoading Show loading indication (default=true)
-   *
-   * @return  boolean
-   *
-   * @method  Process::_call()
-   */
-  Process.prototype._call = function(method, args, onSuccess, onError, showLoading) {
-    var self = this;
-
-    function _defaultError(err) {
-      err = err || 'Unknown error';
-      OSjs.API.error(OSjs.API._('ERR_APP_API_ERROR'),
-                     OSjs.API._('ERR_APP_API_ERROR_DESC_FMT', self.__pname, method),
-                     err);
-    }
-
-    console.warn('********************************* WARNING *********************************');
-    console.warn('THE METHOD Process:_call() IS DEPRECATED AND WILL BE REMOVED IN THE FUTURE');
-    console.warn('PLEASE USE Process::_api() INSTEAD!');
-    console.warn('***************************************************************************');
-
-    this._api(method, args, function(err, res) {
-      if ( err ) {
-        (onError || _defaultError)(err);
-      } else {
-        (onSuccess || function() {})(res);
-      }
-    }, showLoading);
   };
 
   /**

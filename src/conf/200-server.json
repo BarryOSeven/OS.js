@@ -6,7 +6,12 @@
       "proxy": false,
       "homes":  "%DROOT%/vfs/home",
       "mounts": {
-        "upload": "%DROOT%/vfs/upload"
+        "upload": "%DROOT%/vfs/upload",
+        "cinema": "%DROOT%/vfs/cinema",
+        "bookmarks": "%DROOT%/vfs/bookmarks",
+        "musica": "%DROOT%/vfs/musica",
+        "mysteries": "%DROOT%/vfs/mysteries",
+        "software": "%DROOT%/vfs/software"
       },
       "groups": {
         "shared": []

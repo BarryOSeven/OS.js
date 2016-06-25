@@ -30,70 +30,62 @@
 (function(Utils, API) {
   'use strict';
 
-  window.OSjs       = window.OSjs       || {};
-  OSjs.VFS          = OSjs.VFS          || {};
-  OSjs.VFS.Modules  = OSjs.VFS.Modules  || {};
-
   /////////////////////////////////////////////////////////////////////////////
-  // WRAPPERS
+  // API
   /////////////////////////////////////////////////////////////////////////////
 
-  function makeRequest(name, args, callback, options) {
-    args = args || [];
-    callback = callback || {};
+  /*
+   * OSjs 'dist' VFS Transport Module
+   *
+   * This is just a custom version of 'Internal' module
+   *
+   * @api OSjs.VFS.Transports.OSjs
+   */
 
-    function getFiles() {
-      var metadata = OSjs.Core.getPackageManager().getPackages();
-      var files = [];
+  OSjs.VFS.Modules.User = OSjs.VFS.Modules.User || OSjs.VFS._createMountpoint({
+    readOnly: true,
+    description: 'Home',
+    root: 'userhome:///',
+    icon: 'places/folder_home.png',
+    match: /^userhome\:\/\//,
+    visible: false,
+    internal: true,
+    searchable: false,
+    request: OSjs.VFS.Transports.Internal.request
+  });
 
-      Object.keys(metadata).forEach(function(m) {
-        var iter = metadata[m];
-        if ( iter.type !== 'extension' ) {
-          files.push(new OSjs.VFS.File({
-            filename: iter.name,
-            icon: {
-              filename: iter.icon,
-              application: m
-            },
-            type: 'application',
-            path: 'applications:///' + m,
-            mime: 'osjs/application'
-          }, 'osjs/application'));
-        }
-      });
+  var Transport = {
+    url: function(item, callback) {
+      var root = window.location.pathname || '/';
+      if ( root === '/' || window.location.protocol === 'file:' ) {
+        root = '';
+      }
 
-      return files;
+      var module = OSjs.VFS.Modules[OSjs.VFS.getModuleFromPath(item.path)];
+      var url = item.path.replace(module.match, root);
+      callback(false, url);
     }
+  };
 
-    if ( name === 'scandir' ) {
-      var files = getFiles();
-      callback(false, files);
-      return;
+  // Inherit non-restricted methods
+  var restricted = ['write', 'copy', 'move', 'unlink', 'mkdir', 'exists', 'fileinfo', 'trash', 'untrash', 'emptyTrash', 'freeSpace'];
+  var internal = OSjs.VFS.Transports.Internal.module;
+  Object.keys(internal).forEach(function(n) {
+    if ( restricted.indexOf(n) === -1 ) {
+      Transport[n] = internal[n];
     }
-
-    return callback(API._('ERR_VFS_UNAVAILABLE'));
-  }
+  });
 
   /////////////////////////////////////////////////////////////////////////////
   // EXPORTS
   /////////////////////////////////////////////////////////////////////////////
 
-  /**
-   * This is a virtual module for showing 'applications' in OS.js
-   *
-   * @api OSjs.VFS.Modules.Apps
-   */
-  OSjs.VFS.Modules.Apps = OSjs.VFS.Modules.Apps || OSjs.VFS._createMountpoint({
-    readOnly: true,
-    description: 'Instruments',
-    root: 'applications:///',
-    match: /^applications\:\/\//,
-    icon: 'conspiracyos/tools.png',
-    special: true,
-    visible: true,
-    internal: true,
-    searchable: true,
-    request: makeRequest
-  });
+  OSjs.VFS.Transports.OSjs = {
+    module: Transport,
+    defaults: function(opts) {
+      opts.readOnly = true;
+      opts.searchable = true;
+    }
+  };
 
 })(OSjs.Utils, OSjs.API);

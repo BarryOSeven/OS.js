@@ -221,8 +221,6 @@
       console.warn(e.stack, e);
     }
 
-    console.warn(icons);
-
     var wm = OSjs.Core.getWindowManager();
     wm.applySettings({
       desktopIcons: icons

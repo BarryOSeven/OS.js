@@ -30,30 +30,73 @@
 (function(Utils, API) {
   'use strict';
 
-  window.OSjs           = window.OSjs       || {};
-  OSjs.VFS              = OSjs.VFS          || {};
-  OSjs.VFS.Modules      = OSjs.VFS.Modules  || {};
+  /////////////////////////////////////////////////////////////////////////////
+  // API
+  /////////////////////////////////////////////////////////////////////////////
+
+  /*
+   * Application VFS Transport Module
+   *
+   * This is only used for listing packages
+   *
+   * @api OSjs.VFS.Transports.Applications
+   */
+  /*var Transport = {
+    scandir: function(item, callback, options) {
+      var metadata = OSjs.Core.getPackageManager().getPackages();
+      var files = [];
+
+      Object.keys(metadata).forEach(function(m) {
+        var iter = metadata[m];
+        if ( iter.type !== 'extension' ) {
+          files.push(new OSjs.VFS.File({
+            filename: iter.name,
+            icon: {
+              filename: iter.icon,
+              application: m
+            },
+            type: 'application',
+            path: 'applications:///' + m,
+            mime: 'osjs/application'
+          }, 'osjs/application'));
+        }
+      });
+
+      callback(false, files);
+    }
+  };*/
 
   /////////////////////////////////////////////////////////////////////////////
   // EXPORTS
   /////////////////////////////////////////////////////////////////////////////
 
   /**
-   * This is a virtual module for showing 'dist' files in OS.js
+   * This is a virtual module for showing 'applications' in OS.js
    *
-   * @see OSjs.VFS.Transports.Internal
-   * @api OSjs.VFS.Modules.User
+   * @api OSjs.VFS.Modules.Apps
    */
-  OSjs.VFS.Modules.User = OSjs.VFS.Modules.User || OSjs.VFS._createMountpoint({
+  /*OSjs.VFS.Modules.Apps = OSjs.VFS.Modules.Apps || OSjs.VFS._createMountpoint({
     readOnly: true,
-    description: 'Home',
-    root: 'userhome:///',
-    icon: 'places/folder_home.png',
-    match: /^userhome\:\/\//,
-    visible: false,
+    description: 'Instruments',
+    root: 'applications:///',
+    match: /^applications\:\/\//,
+    icon: 'conspiracyos/tools.png',
+    special: true,
+    visible: true,
     internal: true,
-    searchable: false,
-    request: OSjs.VFS.Transports.Internal.request
-  });
+    searchable: true,
+    request: makeRequest
+  });*/
+
+  /*
+  OSjs.VFS.Transports.Applications = {
+    module: Transport,
+    defaults: function(opts) {
+      opts.readOnly = true;
+      opts.special = true;
+      opts.searchable = true;
+    }
+  };
+*/
 
 })(OSjs.Utils, OSjs.API);

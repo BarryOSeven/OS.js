@@ -30,16 +30,22 @@
 (function() {
   'use strict';
 
-  window.OSjs = window.OSjs || {};
-
   var handler    = null;
   var loaded     = false;
   var inited     = false;
   var signingOut = false;
 
   // Make sure these namespaces exist
-  (['API', 'GUI', 'Core', 'Dialogs', 'Helpers', 'Applications', 'Locales', 'VFS', 'Extensions']).forEach(function(ns) {
+  (['Utils', 'API', 'GUI', 'Core', 'Dialogs', 'Helpers', 'Applications', 'Locales', 'VFS', 'Extensions']).forEach(function(ns) {
     OSjs[ns] = OSjs[ns] || {};
+  });
+
+  (['Elements', 'Helpers']).forEach(function(ns) {
+    OSjs.GUI[ns] = OSjs.GUI[ns] || {};
+  });
+
+  (['Transports', 'Modules']).forEach(function(ns) {
+    OSjs.VFS[ns] = OSjs.VFS[ns] || {};
   });
 
   /////////////////////////////////////////////////////////////////////////////
@@ -578,10 +584,10 @@
     var queue = [
       initPreload,
       initHandler,
+      initVFS,
       initPackageManager,
       initExtensions,
       initSettingsManager,
-      initVFS,
       initSearch,
       function(cfg, cb) {
         return OSjs.GUI.DialogScheme.init(cb);
@@ -691,6 +697,8 @@
       handler.destroy();
       handler = null;
     }
+
+    OSjs.API.triggerHook('onShutdown');
 
     console.warn('OS.js was shut down!');
 

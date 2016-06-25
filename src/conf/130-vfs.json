@@ -1,0 +1,61 @@
+{
+  "client": {
+    "SettingsManager": {
+      "VFS": {
+        "scandir": {
+          "showHiddenFiles": true,
+          "showFileExtensions": true,
+          "columns": ["filename", "mime", "size"]
+        }
+      }
+    },
+    "VFS": {
+      "MaxUploadSize": 0,
+      "Home": "home:///",
+
+      "GoogleDrive": {
+        "Enabled": false
+      },
+
+      "OneDrive": {
+        "Enabled": false
+      },
+
+      "Dropbox": {
+        "Enabled": false
+      },
+
+      "LocalStorage": {
+        "Enabled": false
+      },
+
+      "Mountpoints": {
+        "applications": {
+          "enabled": false,
+          "transport": "Applications",
+          "icon": "places/user-bookmarks.png",
+          "description": "Applications"
+        },
+
+        "osjs": {
+          "enabled": false,
+          "transport": "OSjs",
+          "icon": "devices/harddrive.png",
+          "description": "OS.js"
+        },
+
+        "home": {
+          "enabled": false,
+          "icon": "places/folder_home.png",
+          "description": "Home"
+        },
+
+        "shared": {
+          "enabled":     false,
+          "description": "Shared",
+          "icon":        "places/folder-publicshare.png"
+        }
+      }
+    }
+  }
+}

@@ -30,9 +30,6 @@
 (function(Utils, API, GUI, Process) {
   'use strict';
 
-  window.OSjs = window.OSjs || {};
-  OSjs.Core   = OSjs.Core   || {};
-
   /////////////////////////////////////////////////////////////////////////////
   // HELPERS
   /////////////////////////////////////////////////////////////////////////////
@@ -572,7 +569,9 @@
       return !!r;
     });
 
-    Utils.$bind(windowIcon, 'dblclick', Utils._preventDefault);
+    Utils.$bind(windowIcon, 'dblclick', function(ev) {
+      ev.preventDefault();
+    });
     Utils.$bind(windowIcon, 'click', function(ev) {
       ev.preventDefault();
       ev.stopPropagation();
@@ -693,6 +692,8 @@
       return false;
     }
 
+    this._emit('destroy');
+
     this._destroyed = true;
 
     var wm = OSjs.Core.getWindowManager();
@@ -715,6 +716,14 @@
 
     // Removed DOM elements and their referring objects (GUI Elements etc)
     function _destroyDOM() {
+      if ( self._$element ) {
+        // Make sure to remove any remaining event listeners
+        self._$element.querySelectorAll('*').forEach(function(iter) {
+          if ( iter ) {
+            iter.unbindEventListeners();
+          }
+        });
+      }
       if ( self._parent ) {
         self._parent._removeChild(self);
       }
@@ -740,7 +749,6 @@
     }
 
     this._onChange('close');
-    this._emit('destroy');
 
     _destroyDOM();
     _destroyWin();
@@ -809,32 +817,6 @@
   };
 
   /**
-   * Adds a hook to internal event
-   *
-   * DEPRECATED
-   *
-   * @see Window::_on()
-   * @method  Window::_addHook()
-   */
-  Window.prototype._addHook = function(k, func) {
-    console.warn('DEPRECATION WARNING', 'Window::_addHook', 'will be replaced with', 'Window::_on');
-    return this._on(k, func);
-  };
-
-  /**
-   * Fire a hook to internal event
-   *
-   * DEPRECATED
-   *
-   * @see Window::_emit()
-   * @method  Window::_fireHook()
-   */
-  Window.prototype._fireHook = function(k, args) {
-    console.warn('DEPRECATION WARNING', 'Window::_fireHook', 'will be replaced with', 'Window::_emit');
-    return this._emit(k, args);
-  };
-
-  /**
    * Fire a hook to internal event
    *
    * @param   String    k       Event name
@@ -847,8 +829,10 @@
    * @method  Window::_emit()
    */
   Window.prototype._emit = function(k, args) {
-    if ( this._evHandler ) {
-      return this._evHandler.emit(k, args);
+    if ( !this._destroyed ) {
+      if ( this._evHandler ) {
+        return this._evHandler.emit(k, args);
+      }
     }
     return false;
   };

@@ -246,6 +246,18 @@
     }
   }
 
+  function aQueue(queue, every, done) {
+    (function _next(index) {
+      if ( index >= queue.length ) {
+        return done();
+      }
+
+      every(queue[index], function() {
+        _next(index + 1);
+      });
+    })(0);
+  }
+
   /////////////////////////////////////////////////////////////////////////////
   // HELPERS
   /////////////////////////////////////////////////////////////////////////////
@@ -1389,7 +1401,7 @@
   /**
    * Builds packages
    */
-  function buildPackages(grunt, arg) {
+  function buildPackages(grunt, onfinished, arg) {
     function copyFiles(src, dst, p, list) {
       list = list || [];
 
@@ -1465,24 +1477,105 @@
       });
     }
 
-    var packages = readPackageMetadata(grunt);
-    Object.keys(packages).forEach(function(p) {
-      if ( arg && arg !== p ) {
-        return;
+    function compileLess(root, files, done) {
+      files = files || {};
+
+      var additions = [];
+
+      aQueue(Object.keys(files), function(ln, next) {
+        var dest = _path.join(root, files[ln]);
+        var src = _path.join(root, ln);
+
+        console.log('CSS', src.replace(ROOT, ''), '=>', dest.replace(ROOT, ''));
+
+        try {
+          var data = readFile(src).toString();
+          _less.render(data, {
+            sourceMap: {},
+            paths: ['.', PATHS.themes, PATHS.stylesheets]
+          }).then(function(result) {
+            writeFile(dest, result.css);
+            writeFile(dest + '.map', result.map);
+
+            additions.push(files[ln]);
+            additions.push(files[ln] + '.map');
+
+            next();
+          }, function(error) {
+            console.warn(error);
+            next();
+          });
+        } catch ( e ) {
+          console.warn(error, error.stack);
+          next();
+        }
+      }, function() {
+        done(additions);
+      });
+    }
+
+    function runPackageScript(type, pn, cmd, src, dst, cb) {
+      if ( cmd ) {
+        console.log('CMD', type + '@' + pn, '$', cmd);
+        require('child_process').exec(cmd, {cwd: src}, function(err, stdout, stderr) {
+          if ( grunt.option('verbose') ) {
+            console.log(stdout);
+          }
+          if ( stderr ) {
+            console.error(stderr);
+          }
+
+          cb();
+        });
+      } else {
+        cb();
       }
+    }
+
+    var packages = readPackageMetadata(grunt);
+    aQueue(Object.keys(packages), function(p, next) {
+      if ( arg && arg !== p ) {
+        return next();
+      }
+
       grunt.log.subhead(p);
 
       var iter = packages[p];
       var src = _path.join(PATHS.packages, p);
       var dst = _path.join(PATHS.out_client_packages, p);
+      var scripts = iter.build.scripts || {};
 
-      copyFiles(src, dst, p, iter.build.copy);
+      function _compile() {
+        var copy = iter.build.copy || [];
 
-      if ( iter.type === 'extension' ) {
-        return;
+        function _proceed(additions) {
+          additions = additions.filter(function(iter) {
+            return copy.indexOf(iter) < 0;
+          });
+
+          if ( additions.length ) {
+            copy = copy.concat(additions);
+          }
+
+          copyFiles(src, dst, p, copy);
+
+          if ( iter.type !== 'extension' ) {
+            combineFiles(src, dst, p, iter);
+          }
+
+          aQueue(scripts.after || [], function(cmd, nxt) {
+            runPackageScript('after', p, cmd, src, dst, nxt);
+          }, next);
+        }
+
+        compileLess(src, iter.build.less, _proceed);
       }
 
-      combineFiles(src, dst, p, iter);
+      aQueue(scripts.before || [], function(cmd, nxt) {
+        runPackageScript('before', p, cmd, src, dst, nxt);
+      }, _compile);
+    }, function() {
+      onfinished();
     });
   }
 

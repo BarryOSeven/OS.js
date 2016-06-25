@@ -1,0 +1,8 @@
+{
+  "client": {
+    "PackageManager": {
+      "UserPackages":  "userhome:///.uploads",
+      "UserMetadata":  "userhome:///.uploads/uploads.json"
+    }
+  }
+}

@@ -35,10 +35,6 @@
   // https://www.dropbox.com/developers/core/start/python
   // https://www.dropbox.com/developers/reference/devguide
 
-  window.OSjs       = window.OSjs       || {};
-  OSjs.VFS          = OSjs.VFS          || {};
-  OSjs.VFS.Modules  = OSjs.VFS.Modules  || {};
-
   var _cachedClient;
   var _isMounted = false;
 
@@ -363,6 +359,7 @@
    */
   OSjs.VFS.Modules.Dropbox = OSjs.VFS.Modules.Dropbox || OSjs.VFS._createMountpoint({
     readOnly: false,
+    transport: 'Dropbox',
     description: 'Dropbox',
     visible: true,
     searchable: false,
